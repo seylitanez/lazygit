@@ -74,6 +74,9 @@ func (gui *Gui) orderedViewNameMappings() []viewNameMapping {
 	}
 }
 
+
+
+
 func (gui *Gui) createAllViews() error {
 	var err error
 	for _, mapping := range gui.orderedViewNameMappings() {
@@ -117,9 +120,10 @@ func (gui *Gui) createAllViews() error {
 	gui.Views.AppStatus.Visible = false
 	gui.Views.AppStatus.Frame = false
 
-	gui.Views.CommitMessage.Visible = false
+	gui.Views.CommitMessage.Visible = true
 	gui.Views.CommitMessage.Editable = true
-	gui.Views.CommitMessage.Editor = gocui.EditorFunc(gui.commitMessageEditor)
+gui.Views.CommitMessage.Editor = gocui.EditorFunc(gui.commitMessageEditor)
+	
 
 	gui.Views.CommitDescription.Visible = false
 	gui.Views.CommitDescription.Editable = true
