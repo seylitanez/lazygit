@@ -75,14 +75,31 @@ func (gui *Gui) generateCommitName() string {
 	chatRes, err := client.Chat("mistral-tiny", []mistral.ChatMessage{
 		{
 			Role: mistral.RoleUser,
-			Content: `You are an assistant that generates Git commit messages. 
-			Please respond in strict JSON format like this:
-			{ "titre": "type: short title"}
+			Content: `You are an assistant that generates Git commit messages.
 
-			The message must follow Git commit conventions like feat:, fix:, docs:, and stay under 60 characters for the title.
+			⚡ Output format:
+			Respond ONLY in valid JSON:
+			{
+			"titre": "type(scope): concise commit message"
+			}
 
-			Here is the staged diff:
-			` + "```diff\n" + string(output) + "\n```",
+			⚡ Rules:
+			- Follow the Conventional Commits specification:
+			- feat: for new features
+			- fix: for bug fixes
+			- docs: for documentation changes
+			- refactor: for code restructuring without changing behavior
+			- revert: for reverting a previous commit
+			- test: for adding or updating tests
+			- chore: for build, config or maintenance tasks
+			- Keep the title under 60 characters
+			- Use imperative mood (e.g., "add", "fix", "update")
+			- Summarize the main change from the diff clearly and precisely
+			- Do not include explanations, only the JSON object
+			- Optional scope is allowed in parentheses after the type (e.g., feat(api): ...)
+			- Start lowercase (except proper nouns or acronyms)
+
+			Here is the staged diff:` + "```diff\n" + string(output) + "\n```",
 		},
 	}, &mistral.ChatRequestParams{
 		ResponseFormat: mistral.ResponseFormatJsonObject,
